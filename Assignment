@@ -1,0 +1,111 @@
+#Build a command-line Banking Application with the following functionalities:
+#Application starts with a prompt to the user with the following options:
+#Press 1: create account
+#Press 2: transaction
+
+#2. Create account: This should prompt you to enter an email/or unique identity, and then a password. You must check your data structure to make sure the account is unique before creating the new account
+
+#3. Transaction: Authenticate the user by prompting for a password, if the password is correct, user is authenticated and show the following options:Press 1: check balancePress 2: withdrawPress 3: transferif the password is incorrect, tell the user that they are not authorized and go back to the create account option
+
+#4. check balance: query your data structure to check the balance of the authenticated userBuild a command-line Banking Application with the following functionalities: Application starts with a prompt to the user with the following options:
+#Press 1: create account
+#Press 2: transaction
+
+#2. Create account: This should prompt you to enter an email/or unique identity, and then a password. You must check your data structure to make sure the account is unique before creating the new account.[Hint: Ensure that you data structure caters for each users account balance, you might want to initialize this to 0.0]
+
+#3. Transaction: Authenticate the user by prompting for a password, if the password is correct, user is authenticated and show the following options:
+#Press 1: check balance
+#Press 2: deposit
+#Press 3: withdraw
+#Press 4: transfer if the password is incorrect, tell the user that they are not authorized and go back to the create account option4. check balance: query your data structure to check the balance of the authenticated user
+
+#5. deposit: prompt the user to enter an amount, then add the amount to the users balance
+
+#6. withdraw: prompt the user to enter an amount, if the user does not have money in their account, tell them to deposit and move to the deposit prompt. If they user has money, print out the amount withdrawn and the available balance,
+
+#7. transfer: prompt the user to enter an email of the person they want to transfer to, prompt for the amount, deduct the amount from the authenticated users balance, add the amount to the beneficiaries account,
+
+
+
+# VGG COMMERCIAL BANK
+user_id_Database = {
+    'vgg@gmail.com': {'password': 'qwe340', 'user_balance': 600},
+    'a@a.com':{'password':"a", 'user_balance': 200}
+}
+
+
+def create_account():
+    email = input('Enter Email')
+    if email in user_id_Database:
+        print('Email already Exist in our Database, Enter a new mail')
+        create_account()
+    elif '@' not in email:
+        print('enter a valid email')
+        create_account()
+    elif email not in user_id_Database and '@' in email:
+        password = input('Enter Password')
+        user_id_Database[email] = {'password': password, 'user_balance': 0}
+        print('Account Succesfully Created')
+    quit()
+
+
+def transaction():
+    email = input('Enter Email').lower()
+    if email in user_id_Database.keys():
+        password = input('Enter Password')
+        if password == user_id_Database[email]['password']:
+            print('you have been logged in')
+            new_input = input('Press 1: check balance \nPress 2: withdraw\nPress 3: transfer')
+            if new_input == '1':
+                check_balance()
+            elif new_input == 2:
+                withdraw()
+            elif new_input == '3':
+                transfer()
+
+    else:
+        print('Incorrect Email/Password, kindly create a new account')
+    return
+
+
+def check_balance(email):
+    balance = user_id_Database[email][2]
+    print('your balance is', balance)
+    exit()
+
+
+
+def deposit(email):
+    prompt_deposit = input('Enter how much you want to deposit')
+    new_user_balance = float(user_id_Database[user_balance]) + float(prompt_deposit)
+    print('you have successfully added', prompt_deposit, + 'to your balance')
+    quit()
+
+def transfer(email):
+    prompt=int(input('Transfer Amount'))
+    receiver_Mail= input('Enter Receiver mail')
+
+    if prompt> user_id_Database['email']['user_balance']:
+        print("your account balance is too low for the transaction")
+    elif prompt <= user_id_Database['email']['user_balance']:
+        balance_new= user_id_Database['email']['user_balance']- prompt
+        print('you have succesfully transfer ', balance_new,)
+    exit()
+
+def withdraw(email):
+    prompt = int(input('Transfer Amount'))
+    if prompt <= user_id_Database['email']['user_balance']:
+        balance_new= user_id_Database['email']['user_balance']- prompt
+        print('you have succesfully withdraw ', balance_new, )
+    else:
+        balance_new= user_id_Database['email']['user_balance']- prompt
+        return check_balance()
+
+user_input = input('Press 1: create account \nPress 2: transaction')
+
+if user_input == '1':
+    create_account()
+elif user_input == '2':
+    transaction()
+else:
+    print('invalid input, Enter 1 or 2')
